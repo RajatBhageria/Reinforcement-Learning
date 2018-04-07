@@ -5,6 +5,7 @@ numStates = 112
 numActions = 4
 discount = 0.9
 
+
 def valueIteration():
     env = Maze()
     initial_state = env.reset()
@@ -76,10 +77,6 @@ def valueIteration():
             Qvals[s,a] = newValue
     #save the q values
     np.save('QValues',Qvals)
-
-    #do q learning
-
-
 
 def valueIter(transitions, rewards, values, policies):
     epsilon = 1e-5

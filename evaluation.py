@@ -4,9 +4,16 @@
 
 import numpy as np
 
+ACTMAP = {0: 3, 1: 2, 2: 0, 3: 1}
+
+
 def get_action_egreedy(values ,epsilon):
-	# Implement epsilon greedy action policy
-	NotImplementedError
+    #Implement epsilon greedy action policy
+	#randomly pick action based on epsilon
+    action = np.argmax(values)
+    if np.random.rand() < epsilon:
+        action = ACTMAP[action]
+    return action
 
 def evaluation(env, Q_table, step_bound = 100, num_itr = 10):
 	"""
