@@ -7,7 +7,6 @@ numStates = 112
 numActions = 4
 discount = 0.9
 
-
 def qLearning():
     env = Maze()
     initial_state = env.reset()
@@ -19,12 +18,12 @@ def qLearning():
     QStar = np.load('QValues.npy')
     RMSErrors = np.zeros((numIter,))
 
-    qVals = np.random.choice(a = ([.1]), size=(numStates,numActions))
+    qVals = np.random.choice(a = ([.1,.2,.3,.4]), size=(numStates,numActions))
     qVals[[12,24,36,48,60,72,84,96,108]] = 0
 
     currState = initial_state
 
-    learningRate = 0.10
+    learningRate = .15
 
     isDone = False
     i = 0
@@ -34,12 +33,11 @@ def qLearning():
 
     while (i < numIter & ~isDone):
         # e-greedy probaility
-        e = 1-i/numIter
+        e = 1.0-i/numIter
 
         #randomly pick action based on epsilon
         if np.random.rand() < e:
             action = np.random.choice(a = ([0,1,2,3]))
-            #action = ACTMAP[action]
         else:
             # get the action derived from q for current state
             possibleActions = qVals[currState, :]
@@ -61,7 +59,7 @@ def qLearning():
         maxQSPrime = qVals[next_state,actionPrime]
 
         #update the q value table
-        qVals[currState,action] = currQVal + learningRate*(reward + discount*maxQSPrime - currQVal)
+        qVals[currState,action] = currQVal + learningRate*(reward + discount * maxQSPrime - currQVal)
 
         #set the current state equal to the next state
         currState = next_state
@@ -80,19 +78,19 @@ def qLearning():
         i = i + 1
         isDone = done
 
+    print np.argmax(qVals,axis=1)
     print qVals
-    #plot the RMSE
-    plt.plot(RMSErrors)
-    plt.show()
 
-    # # Plot example #
-    # f1, ax1 = plt.subplots()
-    # # repeat for different algs
-    # ax1.plot(range(0, numIter, 50),eval_steps)
-    # f2, ax2 = plt.subplots()
-    # # repeat for different algs
-    # ax2.plot(range(0,numIter,50),eval_reward)
-    # plt.show()
+    #plot the RMSE and evaluaton
+    f1, ax1 = plt.subplots()
+    ax1.plot(RMSErrors)
+    f2, ax2 = plt.subplots()
+    # repeat for different algs
+    ax2.plot(range(0, numIter, 50),eval_steps)
+    f3, ax3 = plt.subplots()
+    # repeat for different algs
+    ax3.plot(range(0,numIter,50),eval_reward)
+    plt.show()
 
 if __name__ == "__main__":
     qLearning()

@@ -8,12 +8,14 @@ ACTMAP = {0: 3, 1: 2, 2: 0, 3: 1}
 
 
 def get_action_egreedy(values ,epsilon):
-    #Implement epsilon greedy action policy
-	#randomly pick action based on epsilon
-    action = np.argmax(values)
-    if np.random.rand() < epsilon:
-        action = ACTMAP[action]
-    return action
+	# randomly pick action based on epsilon
+	if np.random.rand() < epsilon:
+		action = np.random.choice(a=([0, 1, 2, 3]))
+	# action = ACTMAP[action]
+	else:
+		# get the action derived from q for current state
+		action = np.argmax(values)
+	return action
 
 def evaluation(env, Q_table, step_bound = 100, num_itr = 10):
 	"""
