@@ -1,10 +1,10 @@
 from maze import *
 import numpy as np
+from value_plot import value_plot
 
 numStates = 112
 numActions = 4
 discount = 0.9
-
 
 def valueIteration():
     env = Maze()
@@ -41,8 +41,8 @@ def valueIteration():
     policies = np.random.choice(a = (0,1,2,3), size=(112,))
 
     #do value iteration
-    #for i in range (0,50000):
-    values, policies = valueIter(transitions, rewards, values, policies)
+    for i in range (0,5000):
+        values, policies = valueIter(transitions, rewards, values, policies)
 
     #best policy found so now save all the Q values
     Qvals = np.zeros((numStates,numActions))
@@ -71,6 +71,7 @@ def valueIteration():
             Qvals[s,a] = newValue
 
     #save the q values
+    value_plot(Qvals, env, True, True)
     print np.argmax(Qvals,axis=1)
     np.save('QValues',Qvals)
 
@@ -114,123 +115,8 @@ def valueIter(transitions, rewards, values, policies):
             # update delta
             delta = max(delta, np.abs(v - values[s,]))
 
-    # for s in range(0,numStates):
-    #     oldAction = policies[s,]
-    #
-    #     maxAVal = 0
-    #     maxA = oldAction
-    #
-    #     #iterate through all the possible action:
-    #     for a in range(0,4):
-    #         # get all the possible new states based on s and action (from policy pi)
-    #         possibleNewStates = transitions[s,a,:]
-    #
-    #         # get the s+1 state where probability != 0
-    #         indiciesSPrime = np.where(possibleNewStates > 0)[0]
-    #         probSPrime = possibleNewStates[indiciesSPrime]
-    #
-    #         # get the reward for state s and action a
-    #         reward = rewards[s, a]
-    #
-    #         # find the new value estimation for state s based on all the possible s+1 states sPrime
-    #         newValue = 0
-    #         for i in range(0, len(indiciesSPrime)):
-    #             # get the state sPrime
-    #             sPrime = indiciesSPrime[i]
-    #             # get the probability of that state sPrime
-    #             prob = probSPrime[i]
-    #             # get the value of sPrime
-    #             valueSPrime = values[sPrime]
-    #             # add the current value to the values for the other sPrimes
-    #             newValue = newValue + prob * (reward + discount * valueSPrime)
-    #         if newValue > maxAVal:
-    #             maxAVal = newValue
-    #             maxA = a
-    #
-    #     policies[s] = maxA
-
     return values, policies
 
-# def policyEvaluation(transitions, rewards, values, policies):
-#     epsilon = 1e-5
-#     delta = []
-#     while delta > epsilon:
-#         delta = 0
-#         #iterate over all the states
-#         for s in range(0,numStates):
-#             #get the current value v
-#             v = values[s,]
-#             #get the current action based on policy pi and state s
-#             action = policies[s,]
-#
-#             #get all the possible new states based on s and action (from policy pi)
-#             possibleNewStates = transitions[s,action,:]
-#
-#             #get the s+1 state where probability != 0
-#             indiciesSPrime = np.where(possibleNewStates > 0)[0]
-#             probSPrime = possibleNewStates[indiciesSPrime]
-#
-#             #get the reward for state s
-#             reward = rewards[s,action]
-#
-#             #find the new value estimation for state s based on all the possible s+1 states sPrime
-#             newValue = 0
-#             for i in range(0,len(indiciesSPrime)):
-#                 #get the state sPrime
-#                 sPrime = indiciesSPrime[i]
-#                 #get the probability of that state sPrime
-#                 prob = probSPrime[i]
-#                 #get the value of sPrime
-#                 valueSPrime = values[sPrime]
-#                 #add the current value to the values for the other sPrimes
-#                 newValue = newValue + prob*(reward + discount*valueSPrime)
-#             values[s] = newValue
-#
-#             #update delta
-#             delta = max(delta,np.abs(v-values[s]))
-#     return values
-#
-#
-# def policyImprovement(transitions, rewards, values, policies):
-#     policy_stable = True
-#     for s in range(0,numStates):
-#         oldAction = policies[s,]
-#
-#         maxAVal = 0
-#         maxA = oldAction
-#
-#         #iterate through all the possible action:
-#         for a in range(0,4):
-#             # get all the possible new states based on s and action (from policy pi)
-#             possibleNewStates = transitions[s,a,:]
-#
-#             # get the s+1 state where probability != 0
-#             indiciesSPrime = np.where(possibleNewStates > 0)[0]
-#             probSPrime = possibleNewStates[indiciesSPrime]
-#
-#             # get the reward for state s and action a
-#             reward = rewards[s, a]
-#
-#             # find the new value estimation for state s based on all the possible s+1 states sPrime
-#             newValue = 0
-#             for i in range(0, len(indiciesSPrime)):
-#                 # get the state sPrime
-#                 sPrime = indiciesSPrime[i]
-#                 # get the probability of that state sPrime
-#                 prob = probSPrime[i]
-#                 # get the value of sPrime
-#                 valueSPrime = values[sPrime]
-#                 # add the current value to the values for the other sPrimes
-#                 newValue = newValue + prob * (reward + discount * valueSPrime)
-#             if newValue > maxAVal:
-#                 maxAVal = newValue
-#                 maxA = a
-#
-#         #check if the old action = new action
-#         if oldAction != maxA:
-#             policy_stable = False
-#
-#     return policies, policy_stable
 
 if __name__ == "__main__":
     valueIteration()

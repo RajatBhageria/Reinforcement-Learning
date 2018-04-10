@@ -1,0 +1,13 @@
+Problem 1:
+ValueIteration.py has the value iteration
+
+Problem 2:
+qLearning.py has the entire q learning problem
+
+Problem 3:
+(d): We cannot use PI/VI since we only have a sequence of state, action, reward triplets but we don't have a full
+transition and reward matrix per se.
+
+Problem 4:
+car.py has functions qLearningMountain to do the qLearning and also REINFORCEMountain to do the REINFORCE
+

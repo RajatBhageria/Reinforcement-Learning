@@ -2,6 +2,7 @@ from maze import *
 import numpy as np
 from matplotlib import pyplot as plt
 from evaluation import *
+from value_plot import value_plot
 
 numStates = 112
 numActions = 4
@@ -18,55 +19,64 @@ def qLearning():
     QStar = np.load('QValues.npy')
     RMSErrors = np.zeros((numIter,))
 
-    qVals = np.random.choice(a = ([.1,.2,.3,.4]), size=(numStates,numActions))
+    qVals = np.random.choice(a = np.linspace(0,2.8,1000), size=(numStates,numActions))
     qVals[[12,24,36,48,60,72,84,96,108]] = 0
 
     currState = initial_state
 
-    learningRate = .15
+    learningRate = .25
 
-    isDone = False
-    i = 0
-
-    #init for evaluation
+    #init for evaluation21
     eval_steps, eval_reward = [], []
 
-    while (i < numIter & ~isDone):
-        # e-greedy probaility
-        e = 1.0-i/numIter
+    #numVisits
+    numVisits = np.zeros((numStates,))
 
-        #randomly pick action based on epsilon
-        if np.random.rand() < e:
-            action = np.random.choice(a = ([0,1,2,3]))
-        else:
-            # get the action derived from q for current state
-            possibleActions = qVals[currState, :]
-            action = np.argmax(possibleActions)
+    for i in range(0,numIter):
+        done = False
+        while (~done):
+            # e-greedy probaility
+            #e = 1.0-(500*i)/numIter
+            e = 1000/(1000 + numVisits[currState])
 
-        #take that action and step
-        reward, next_state, done = env.step(currState, action)
+            #randomly pick action based on epsilon
+            if np.random.rand() < e:
+                action = np.random.choice(a = ([0,1,2,3]))
+            else:
+                # get the action derived from q for current state
+                possibleActions = qVals[currState, :]
+                action = np.argmax(possibleActions)
 
-        #get the current q value
-        currQVal = qVals[currState,action]
+            #increase numVisits
+            numVisits[currState] = numVisits[currState] + 1
 
-        #get the possible qvalues for s'
-        possibleNewStates = qVals[next_state,:]
+            #take that action and step
+            reward, next_state, done = env.step(currState, action)
 
-        #get the best action based on the next state s'
-        actionPrime = np.argmax(possibleNewStates)
+            #get the current q value
+            currQVal = qVals[currState,action]
 
-        #get the q value of that state
-        maxQSPrime = qVals[next_state,actionPrime]
+            #get the possible qvalues for s'
+            possibleNewStates = qVals[next_state,:]
 
-        #update the q value table
-        qVals[currState,action] = currQVal + learningRate*(reward + discount * maxQSPrime - currQVal)
+            #get the best action based on the next state s'
+            actionPrime = np.argmax(possibleNewStates)
 
-        #set the current state equal to the next state
-        currState = next_state
+            #get the q value of that state
+            maxQSPrime = qVals[next_state,actionPrime]
 
-        #RMSE
-        error = np.linalg.norm(np.sqrt(np.abs(np.square(qVals) - np.square(QStar))))
-        RMSErrors[i] = error
+            #update the q value table
+            qVals[currState,action] = currQVal + learningRate*(reward + discount * maxQSPrime - currQVal)
+
+            #set the current state equal to the next state
+            currState = next_state
+
+            if done:
+                break
+
+            #RMSE
+            error = np.linalg.norm(np.sqrt(np.abs(np.square(qVals) - np.square(QStar))))
+            RMSErrors[i] = error
 
         #evaluation
         if (i % 50 == 0):
@@ -74,14 +84,9 @@ def qLearning():
             eval_steps.append(avg_step)
             eval_reward.append(avg_reward)
 
-        #update counter for number of iters
-        i = i + 1
-        isDone = done
-
-    print np.argmax(qVals,axis=1)
     print qVals
 
-    #plot the RMSE and evaluaton
+    # #plot the RMSE and evaluaton
     f1, ax1 = plt.subplots()
     ax1.plot(RMSErrors)
     f2, ax2 = plt.subplots()
@@ -91,6 +96,9 @@ def qLearning():
     # repeat for different algs
     ax3.plot(range(0,numIter,50),eval_reward)
     plt.show()
+
+    value_plot(qVals,env,True,True)
+
 
 if __name__ == "__main__":
     qLearning()
