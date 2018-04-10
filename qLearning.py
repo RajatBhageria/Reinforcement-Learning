@@ -26,7 +26,7 @@ def qLearning():
 
     learningRate = .05
 
-    #init for evaluation21
+    #init for evaluation
     eval_steps, eval_reward = [], []
 
     #number of iterations
@@ -89,12 +89,15 @@ def qLearning():
     # #plot the RMSE and evaluaton
     f1, ax1 = plt.subplots()
     ax1.plot(RMSErrors)
+    f1.suptitle('RMSE Values')
     f2, ax2 = plt.subplots()
     # repeat for different algs
     ax2.plot(range(0, numIter, 50),eval_steps)
+    f2.suptitle('Evaluation Steps')
     f3, ax3 = plt.subplots()
     # repeat for different algs
     ax3.plot(range(0,numIter,50),eval_reward)
+    f2.suptitle('Evaluation Reward')
     plt.show()
 
     value_plot(qVals,env,True,True)

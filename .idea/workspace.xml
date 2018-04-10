@@ -2,14 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0251c8d7-239d-4a25-be3d-0e2020bd906b" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/evaluationAcrobat.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/evaluationCar.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/evaluationREINFORCE.py" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/QValues.npy" afterPath="$PROJECT_DIR$/QValues.npy" />
       <change beforePath="$PROJECT_DIR$/README" afterPath="$PROJECT_DIR$/README" />
       <change beforePath="$PROJECT_DIR$/acrobat.py" afterPath="$PROJECT_DIR$/acrobat.py" />
       <change beforePath="$PROJECT_DIR$/car.py" afterPath="$PROJECT_DIR$/car.py" />
-      <change beforePath="$PROJECT_DIR$/valueIteration.py" afterPath="$PROJECT_DIR$/valueIteration.py" />
+      <change beforePath="$PROJECT_DIR$/qLearning.py" afterPath="$PROJECT_DIR$/qLearning.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,8 +21,8 @@
       <file leaf-file-name="qLearning.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/qLearning.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="68" column="61" lean-forward="false" selection-start-line="68" selection-start-column="49" selection-end-line="68" selection-end-column="61" />
+            <state relative-caret-position="163">
+              <caret line="87" column="0" lean-forward="true" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -32,31 +30,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="evaluationAcrobat.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/evaluationAcrobat.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-5">
-              <caret line="36" column="20" lean-forward="true" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="10" lean-forward="true" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="acrobat.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/acrobat.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2">
-              <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="91" selection-end-column="76" />
+            <state relative-caret-position="230">
+              <caret line="47" column="33" lean-forward="false" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -64,11 +42,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="car.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="car.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/car.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="358">
-              <caret line="181" column="19" lean-forward="false" selection-start-line="181" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
+            <state relative-caret-position="43">
+              <caret line="34" column="19" lean-forward="true" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -76,21 +54,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="continuous_mountain_car.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Library/Python/2.7/lib/python/site-packages/gym/envs/classic_control/continuous_mountain_car.py">
+      <file leaf-file-name="README" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/README">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pydevd.py" pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="1667" column="0" lean-forward="false" selection-start-line="1667" selection-start-column="0" selection-end-line="1668" selection-end-column="0" />
+            <state relative-caret-position="165">
+              <caret line="11" column="55" lean-forward="false" selection-start-line="11" selection-start-column="55" selection-end-line="11" selection-end-column="55" />
               <folding />
             </state>
           </provider>
@@ -125,13 +93,14 @@
         <option value="$PROJECT_DIR$/reinforce.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/valueIteration.py" />
-        <option value="$PROJECT_DIR$/qLearning.py" />
         <option value="$PROJECT_DIR$/evaluationContinuous.py" />
         <option value="$PROJECT_DIR$/evaluationCar.py" />
         <option value="$PROJECT_DIR$/evaluationAcrobat.py" />
+        <option value="$PROJECT_DIR$/evaluationREINFORCE.py" />
+        <option value="$PROJECT_DIR$/README" />
+        <option value="$PROJECT_DIR$/qLearning.py" />
         <option value="$PROJECT_DIR$/acrobat.py" />
         <option value="$PROJECT_DIR$/car.py" />
-        <option value="$PROJECT_DIR$/README" />
       </list>
     </option>
   </component>
@@ -348,8 +317,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/car.py</url>
-          <line>125</line>
-          <option name="timeStamp" value="59" />
+          <line>53</line>
+          <option name="timeStamp" value="65" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -362,7 +331,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="64" />
+      <option name="time" value="66" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -486,14 +455,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="34" column="7" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Library/Python/2.7/lib/python/site-packages/gym/wrappers/time_limit.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="215">
@@ -510,39 +471,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluationCar.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="48" column="22" lean-forward="true" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Library/Python/2.7/lib/python/site-packages/gym/envs/classic_control/acrobot.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="348">
           <caret line="103" column="0" lean-forward="false" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/qLearning.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="68" column="61" lean-forward="false" selection-start-line="68" selection-start-column="49" selection-end-line="68" selection-end-column="61" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/acrobat.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2">
-          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="91" selection-end-column="76" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -562,29 +495,73 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/car.py">
+    <entry file="file://$PROJECT_DIR$/evaluationCar.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="181" column="19" lean-forward="false" selection-start-line="181" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="355">
+          <caret line="61" column="34" lean-forward="true" selection-start-line="61" selection-start-column="12" selection-end-line="61" selection-end-column="34" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluationAcrobat.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5">
-          <caret line="36" column="20" lean-forward="true" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+        <state relative-caret-position="731">
+          <caret line="50" column="25" lean-forward="false" selection-start-line="50" selection-start-column="25" selection-end-line="50" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluationREINFORCE.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="7" lean-forward="true" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="10" lean-forward="true" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+        <state relative-caret-position="165">
+          <caret line="11" column="55" lean-forward="false" selection-start-line="11" selection-start-column="55" selection-end-line="11" selection-end-column="55" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="34" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/qLearning.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="87" column="0" lean-forward="true" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/acrobat.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="47" column="33" lean-forward="false" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/car.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="43">
+          <caret line="34" column="19" lean-forward="true" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

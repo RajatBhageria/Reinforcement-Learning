@@ -3,6 +3,7 @@ import numpy as np
 from maze import *
 from matplotlib import pyplot as plt
 from evaluationCar import *
+from evaluationREINFORCE import *
 
 env = gym.make("MountainCarContinuous-v0")
 observation = env.reset()
@@ -30,29 +31,33 @@ numBinsObs = 100
 obsBinsPos = np.linspace(obsSpaceLowerbound[0], obsSpaceUpperbound[0], numBinsObs)
 obsBinsVel = np.linspace(obsSpaceLowerbound[1], obsSpaceUpperbound[1], numBinsObs)
 
-learningRate = .05
-
 #do the policy gradient
 def REINFORCECar():
+    learningRate = .25
+
+    eval_steps, eval_reward = [], []
+
     # for function approxomation
     theta = np.random.random(size=(2,numBinsActions))
 
     #baseline
     b = np.sum(2,)
 
-    for i_episode in range(1000):
+    numIter = 1000
+
+    for i_episode in range(numIter):
         #collect a set of trajectories by executing current policy
-        time = 100
+        time = 1000
         trajectories = np.zeros((3,time)) #(state,action,reward)
 
         #collect a set the average of the observations
         scores = np.zeros((2,time))
 
-        for t in range(time-1):
-            observation = env.reset().reshape(2, 1)  # this is phi
+        observation = env.reset()
 
+        for t in range(time-1):
             # find the value of phi*theta
-            phiTheta = np.multiply(observation, theta)
+            phiTheta = np.dot(observation, theta)
 
             # take exponentials for softmax
             phiThetaExp = np.exp(phiTheta)
@@ -60,10 +65,16 @@ def REINFORCECar():
             # find the probailities of each column
             probs = np.mean(phiThetaExp, axis=0) / np.mean(phiThetaExp)
 
-            # find the appropriate action
-            actionDes = int(np.argmax(probs))
+            # e-greedy probaility
+            e = 1.0 - t / (100)
 
-            action = np.array(actionBins[actionDes]).reshape((1,))
+            # randomly pick action based on epsilon
+            if np.random.rand() < e:
+                action = random.uniform(actionSpaceLowerBound, actionSpaceUpperBound)
+            else:
+                # find the appropriate action
+                actionDes = int(np.argmax(probs))
+                action = np.array(actionBins[actionDes]).reshape((1,))
 
             #take a step
             observationPrime, reward, done, info = env.step(action)
@@ -79,18 +90,24 @@ def REINFORCECar():
 
             env.render()
 
+        # evaluation
+        if (i_episode % 50 == 0):
+            avg_step, avg_reward = evaluationREINFORCE(env, action)
+            eval_steps.append(avg_step)
+            eval_reward.append(avg_reward)
+
         #find gradient of J(theta)
         for t in range(time):
-            #find Gt
+            #find Gt and update bt
             Gt = 0
             for tRest in range(t,time-1):
-                Gt = Gt + discount**tRest + trajectories[2,tRest]
+                Gt = Gt + ((discount**tRest) * trajectories[2,tRest])
+
+            #get b
+            b = np.mean(trajectories[2,:])
 
             #get the advantage
             At = Gt - b
-
-            #refit the baseline
-            b = np.linalg.norm(b - Gt)
 
             #correct action taken
             action = int(trajectories[1,t])
@@ -99,10 +116,20 @@ def REINFORCECar():
             gHat = scores[:,t]
 
             #reconfigure thetas
-            theta[:,action] = theta[:,action] + learningRate * discount * At * gHat
+            theta[:,action] = theta[:,action] #+ learningRate * discount * At * gHat
 
+    f2, ax2 = plt.subplots()
+    # repeat for different algs
+    ax2.plot(range(0, numIter, 50), eval_steps)
+    f2.suptitle('Evaluation Steps')
+    f3, ax3 = plt.subplots()
+    # repeat for different algs
+    ax3.plot(range(0, numIter, 50), eval_reward)
+    f3.suptitle('Evaluation Reward')
+    plt.show()
 
 def qLearningMountain():
+    learningRate = .2
     eval_steps, eval_reward = [], []
     qVals = np.random.choice(a = np.linspace(0,100,100), size=(numBinsObs,numBinsObs,numBinsActions))
 
@@ -135,9 +162,6 @@ def qLearningMountain():
 
             # take that action and step
             observationPrime, reward, done, info = env.step(action)
-
-            if (pos>.5):
-                reward = reward + 50
 
             # get the current q value
             currQVal = qVals[posDes,velDes,actionDes]
@@ -174,9 +198,11 @@ def qLearningMountain():
     f2, ax2 = plt.subplots()
     # repeat for different algs
     ax2.plot(range(0, numIter, 50),eval_steps)
+    f2.suptitle('Evaluation Steps')
     f3, ax3 = plt.subplots()
     # repeat for different algs
     ax3.plot(range(0,numIter,50),eval_reward)
+    f3.suptitle('Evaluation Reward')
     plt.show()
 
 if __name__ == "__main__":

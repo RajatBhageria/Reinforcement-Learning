@@ -2,6 +2,7 @@ import gym
 import numpy as np
 from maze import *
 from matplotlib import pyplot as plt
+from evaluationREINFORCE import *
 from evaluationAcrobat import *
 
 env = gym.make("Acrobot-v1")
@@ -26,25 +27,30 @@ eval_steps, eval_reward = [], []
 
 #do the policy gradient
 def REINFORCEAcrobat():
+    #init for evaluation
+    eval_steps, eval_reward = [], []
+
     # for function approxomation
     theta = np.random.random(size=(numFeatures,numActions))
 
     #baseline
     b = np.sum(2,)
 
-    for i_episode in range(10000):
+    numIter = 10000
+
+    for i_episode in range(numIter):
         #collect a set of trajectories by executing current policy
         time = 100
         trajectories = np.zeros((3,time)) #(state,action,reward)
 
         #collect a set the average of the observations
         scores = np.zeros((numFeatures,time))
+        observation = env.reset()
 
         for t in range(time-1):
-            observation = env.reset().reshape(6, 1)  # this is phi
 
             # find the value of phi*theta
-            phiTheta = np.multiply(observation, theta)
+            phiTheta = np.dot(observation, theta)
 
             # take exponentials for softmax
             phiThetaExp = np.exp(phiTheta)
@@ -65,22 +71,30 @@ def REINFORCEAcrobat():
             #fill in the scores
             scores[:,t] = (observation - observation/3).reshape(6,)
 
+            #set the new observation = current obs
             observation = observationPrime
 
+            #render
             env.render()
+
+        # evaluation
+        if (i_episode % 50 == 0):
+            avg_step, avg_reward = evaluationREINFORCE(env, action)
+            eval_steps.append(avg_step)
+            eval_reward.append(avg_reward)
 
         #find gradient of J(theta)
         for t in range(time):
             #find Gt
             Gt = 0
             for tRest in range(t,time-1):
-                Gt = Gt + discount**tRest + trajectories[2,tRest]
+                Gt = Gt + (discount**tRest) * trajectories[2,tRest]
 
             #get the advantage
             At = Gt - b
 
-            #refit the baseline
-            b = np.linalg.norm(b - Gt)
+            #get b
+            b = np.mean(trajectories[2,:])
 
             #correct action taken
             action = int(trajectories[1,t])
@@ -90,6 +104,16 @@ def REINFORCEAcrobat():
 
             #reconfigure thetas
             theta[:,action] = theta[:,action] + alpha * discount * At * gHat
+
+    f2, ax2 = plt.subplots()
+    # repeat for different algs
+    ax2.plot(range(0, numIter, 50), eval_steps)
+    f2.suptitle('Evaluation Steps')
+    f3, ax3 = plt.subplots()
+    # repeat for different algs
+    ax3.plot(range(0, numIter, 50), eval_reward)
+    f3.suptitle('Evaluation Reward')
+    plt.show()
 
 #do the qLearning for the Acrobat
 def qLearningAcrobat():
@@ -173,12 +197,14 @@ def qLearningAcrobat():
     f2, ax2 = plt.subplots()
     # repeat for different algs
     ax2.plot(range(0, numIter, 50),eval_steps)
+    f2.suptitle('Evaluation Steps')
     f3, ax3 = plt.subplots()
     # repeat for different algs
     ax3.plot(range(0,numIter,50),eval_reward)
+    f3.suptitle('Evaluation Reward')
     plt.show()
 
 if __name__ == "__main__":
-    #REINFORCEAcrobat()
+    REINFORCEAcrobat()
 
-    qLearningAcrobat()
+    #qLearningAcrobat()
