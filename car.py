@@ -9,8 +9,6 @@ observation = env.reset()
 env._max_episode_seconds = 500
 env._max_episode_steps = 1000
 
-print env
-
 #get the actionsSpace
 #[position]
 actionSpace = env.action_space

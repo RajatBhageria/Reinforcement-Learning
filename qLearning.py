@@ -24,31 +24,31 @@ def qLearning():
 
     currState = initial_state
 
-    learningRate = .25
+    learningRate = .05
 
     #init for evaluation21
     eval_steps, eval_reward = [], []
 
-    #numVisits
-    numVisits = np.zeros((numStates,))
-
+    #number of iterations
     for i in range(0,numIter):
         done = False
+        # numVisits for the epsilon function
+        numVisits = np.zeros((numStates,))
+
+        #episodes
         while (~done):
             # e-greedy probaility
-            #e = 1.0-(500*i)/numIter
-            e = 1000/(1000 + numVisits[currState])
+            e = 100/(100 + numVisits[currState])
+            #increase numVisits
+            numVisits[currState] = numVisits[currState] + 1
 
             #randomly pick action based on epsilon
-            if np.random.rand() < e:
+            if np.random.rand() <= e:
                 action = np.random.choice(a = ([0,1,2,3]))
             else:
                 # get the action derived from q for current state
                 possibleActions = qVals[currState, :]
                 action = np.argmax(possibleActions)
-
-            #increase numVisits
-            numVisits[currState] = numVisits[currState] + 1
 
             #take that action and step
             reward, next_state, done = env.step(currState, action)
@@ -71,12 +71,12 @@ def qLearning():
             #set the current state equal to the next state
             currState = next_state
 
-            if done:
-                break
-
             #RMSE
             error = np.linalg.norm(np.sqrt(np.abs(np.square(qVals) - np.square(QStar))))
             RMSErrors[i] = error
+
+            if done:
+                break
 
         #evaluation
         if (i % 50 == 0):
