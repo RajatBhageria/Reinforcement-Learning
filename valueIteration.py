@@ -70,9 +70,9 @@ def valueIteration():
                 newValue = newValue + prob*(reward + discount*valueSPrime)
             Qvals[s,a] = newValue
 
+    print Qvals
     #save the q values
     value_plot(Qvals, env, True, True)
-    print np.argmax(Qvals,axis=1)
     np.save('QValues',Qvals)
 
 def valueIter(transitions, rewards, values, policies):

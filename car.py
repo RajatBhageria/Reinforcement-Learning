@@ -2,43 +2,115 @@ import gym
 import numpy as np
 from maze import *
 from matplotlib import pyplot as plt
-from evaluation import *
+from evaluationCar import *
 
 env = gym.make("MountainCarContinuous-v0")
 observation = env.reset()
-env._max_episode_seconds = 500
 env._max_episode_steps = 1000
+discount = 0.9
 
-#get the actionsSpace
-#[position]
+# get the actionsSpace
+# [position]
 actionSpace = env.action_space
 actionSpaceLowerBound = actionSpace.low
 actionSpaceUpperBound = actionSpace.high
 
-#descritize the action space
+# descritize the action space
 numBinsActions = 100
-actionBins = np.linspace(actionSpaceLowerBound,actionSpaceUpperBound,numBinsActions)
+actionBins = np.linspace(actionSpaceLowerBound, actionSpaceUpperBound, numBinsActions)
 
-#get the observations space
-#[position, velocity]
+# get the observations space
+# [position, velocity]
 observationSpace = env.observation_space
 obsSpaceLowerbound = observationSpace.low
 obsSpaceUpperbound = observationSpace.high
 
-#descritize the observation space
+# descritize the observation space
 numBinsObs = 100
-obsBinsPos = np.linspace(obsSpaceLowerbound[0],obsSpaceUpperbound[0],numBinsObs)
-obsBinsVel = np.linspace(obsSpaceLowerbound[1],obsSpaceUpperbound[1],numBinsObs)
-discount = 0.9
+obsBinsPos = np.linspace(obsSpaceLowerbound[0], obsSpaceUpperbound[0], numBinsObs)
+obsBinsVel = np.linspace(obsSpaceLowerbound[1], obsSpaceUpperbound[1], numBinsObs)
 
-def qLearningMountain():
-    qVals = np.random.choice(a = ([.1,.2,.3,.4,.5,.6,.7,.8,.9]), size=(numBinsObs,numBinsObs,numBinsActions))
+learningRate = .05
 
-    learningRate = .20
+#do the policy gradient
+def REINFORCECar():
+    # for function approxomation
+    theta = np.random.random(size=(2,numBinsActions))
+
+    #baseline
+    b = np.sum(2,)
 
     for i_episode in range(1000):
+        #collect a set of trajectories by executing current policy
+        time = 100
+        trajectories = np.zeros((3,time)) #(state,action,reward)
+
+        #collect a set the average of the observations
+        scores = np.zeros((2,time))
+
+        for t in range(time-1):
+            observation = env.reset().reshape(2, 1)  # this is phi
+
+            # find the value of phi*theta
+            phiTheta = np.multiply(observation, theta)
+
+            # take exponentials for softmax
+            phiThetaExp = np.exp(phiTheta)
+
+            # find the probailities of each column
+            probs = np.mean(phiThetaExp, axis=0) / np.mean(phiThetaExp)
+
+            # find the appropriate action
+            actionDes = int(np.argmax(probs))
+
+            action = np.array(actionBins[actionDes]).reshape((1,))
+
+            #take a step
+            observationPrime, reward, done, info = env.step(action)
+
+            #fill im trajectories
+            trajectories[1,t] = action
+            trajectories[2,t] = reward
+
+            #fill in the scores
+            scores[:,t] = (observation - observation/3).reshape(2,)
+
+            observation = observationPrime
+
+            env.render()
+
+        #find gradient of J(theta)
+        for t in range(time):
+            #find Gt
+            Gt = 0
+            for tRest in range(t,time-1):
+                Gt = Gt + discount**tRest + trajectories[2,tRest]
+
+            #get the advantage
+            At = Gt - b
+
+            #refit the baseline
+            b = np.linalg.norm(b - Gt)
+
+            #correct action taken
+            action = int(trajectories[1,t])
+
+            #calculate g-hat, the gradient of logPi
+            gHat = scores[:,t]
+
+            #reconfigure thetas
+            theta[:,action] = theta[:,action] + learningRate * discount * At * gHat
+
+
+def qLearningMountain():
+    eval_steps, eval_reward = [], []
+    qVals = np.random.choice(a = np.linspace(0,100,100), size=(numBinsObs,numBinsObs,numBinsActions))
+
+    numIter = 1000
+
+    for i_episode in range(numIter):
         observation = env.reset()
-        for t in range(100):
+        for t in range(1000):
             env.render()
 
             #get the descritized states
@@ -53,19 +125,19 @@ def qLearningMountain():
             # randomly pick action based on epsilon
             if np.random.rand() < e:
                 action = random.uniform(actionSpaceLowerBound, actionSpaceUpperBound)
+                #discretize the action
+                actionDes = np.digitize(action, actionBins)
             else:
                 # get the action derived from q for current state
                 possibleActions = qVals[posDes,velDes, :]
-                action = np.argmax(possibleActions)
+                actionDes = np.argmax(possibleActions)
+                action = np.array(actionBins[actionDes]).reshape((1,))
 
             # take that action and step
             observationPrime, reward, done, info = env.step(action)
 
-            if (observation[0]>.3):
+            if (pos>.5):
                 reward = reward + 50
-
-            #descritize the action
-            actionDes = np.digitize(action,actionBins)
 
             # get the current q value
             currQVal = qVals[posDes,velDes,actionDes]
@@ -93,16 +165,21 @@ def qLearningMountain():
                 print("Episode finished after {} timesteps".format(t + 1))
                 break
 
-    print np.argmax(qVals,axis=1)
-    print qVals
+        #evaluation
+        if (i_episode % 50 == 0):
+            avg_step, avg_reward = evaluationCar(env, qVals,50,numIter)
+            eval_steps.append(avg_step)
+            eval_reward.append(avg_reward)
 
-    # f2, ax2 = plt.subplots()
-    # # repeat for different algs
-    # ax2.plot(range(0, numIter, 50),eval_steps)
-    # f3, ax3 = plt.subplots()
-    # # repeat for different algs
-    # ax3.plot(range(0,numIter,50),eval_reward)
-    # plt.show()
+    f2, ax2 = plt.subplots()
+    # repeat for different algs
+    ax2.plot(range(0, numIter, 50),eval_steps)
+    f3, ax3 = plt.subplots()
+    # repeat for different algs
+    ax3.plot(range(0,numIter,50),eval_reward)
+    plt.show()
 
 if __name__ == "__main__":
-    qLearningMountain()
+    REINFORCECar()
+
+    #qLearningMountain()

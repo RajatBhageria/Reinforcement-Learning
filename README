@@ -1,13 +1,19 @@
 Problem 1:
-ValueIteration.py has the value iteration
+ValueIteration.py has the value iteration for the maze.
 
 Problem 2:
-qLearning.py has the entire q learning problem
+qLearning.py has the entire qLearning problem for the maze
 
 Problem 3:
+acrobat.py has the REINFORCE algorithm called REINFORCEAcrobat() as well as the qlearning algorithm called qLearningAcrobat().
+For the qLearningAcrobat, we use the evaluationAcrobat.py. To run qLearning,
+just run that method in the if __name__ == "__main__" of the file and vice versa for REINFORCECar().
+
 (d): We cannot use PI/VI since we only have a sequence of state, action, reward triplets but we don't have a full
 transition and reward matrix per se.
 
 Problem 4:
-car.py has functions qLearningMountain to do the qLearning and also REINFORCEMountain to do the REINFORCE
+car.py has functions qLearningMountain() to do the qLearning and also REINFORCECar() to do the REINFORCE. To run qLearning,
+just run that method in the if __name__ == "__main__" of the file and vice versa for REINFORCECar().
+This problem uses evaluationCar.py to do evaluation.
 
