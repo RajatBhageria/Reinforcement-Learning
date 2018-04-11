@@ -97,7 +97,7 @@ def qLearning():
     f3, ax3 = plt.subplots()
     # repeat for different algs
     ax3.plot(range(0,numIter,50),eval_reward)
-    f2.suptitle('Evaluation Reward')
+    f3.suptitle('Evaluation Reward')
     plt.show()
 
     value_plot(qVals,env,True,True)

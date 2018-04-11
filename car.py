@@ -7,7 +7,7 @@ from evaluationREINFORCE import *
 
 env = gym.make("MountainCarContinuous-v0")
 observation = env.reset()
-env._max_episode_steps = 1000
+env._max_episode_steps = 2000
 discount = 0.9
 
 # get the actionsSpace
@@ -33,7 +33,7 @@ obsBinsVel = np.linspace(obsSpaceLowerbound[1], obsSpaceUpperbound[1], numBinsOb
 
 #do the policy gradient
 def REINFORCECar():
-    learningRate = .25
+    learningRate = .9
 
     eval_steps, eval_reward = [], []
 
@@ -47,7 +47,7 @@ def REINFORCECar():
 
     for i_episode in range(numIter):
         #collect a set of trajectories by executing current policy
-        time = 1000
+        time = 2000
         trajectories = np.zeros((3,time)) #(state,action,reward)
 
         #collect a set the average of the observations
@@ -133,11 +133,11 @@ def qLearningMountain():
     eval_steps, eval_reward = [], []
     qVals = np.random.choice(a = np.linspace(0,100,100), size=(numBinsObs,numBinsObs,numBinsActions))
 
-    numIter = 1000
+    numIter = 500
 
     for i_episode in range(numIter):
         observation = env.reset()
-        for t in range(1000):
+        for t in range(2000):
             env.render()
 
             #get the descritized states

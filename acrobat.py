@@ -36,7 +36,7 @@ def REINFORCEAcrobat():
     #baseline
     b = np.sum(2,)
 
-    numIter = 10000
+    numIter = 500
 
     for i_episode in range(numIter):
         #collect a set of trajectories by executing current policy
@@ -205,6 +205,6 @@ def qLearningAcrobat():
     plt.show()
 
 if __name__ == "__main__":
-    REINFORCEAcrobat()
+    #REINFORCEAcrobat()
 
-    #qLearningAcrobat()
+    qLearningAcrobat()

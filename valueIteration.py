@@ -81,7 +81,7 @@ def valueIter(transitions, rewards, values, policies):
     while delta > epsilon:
         delta = 0.0
         # iterate over all the states
-        for s in range(0, numStates):
+        for s in range(0    , numStates):
             # get the  current value v
             v = values[s,]
             maxAVal = 0
